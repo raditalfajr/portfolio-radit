@@ -222,27 +222,72 @@ header {
 
 /* Hero Image */
 .hero-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-.image-frame {
-    position: relative;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #00d9ff, #3b82f6);
-    padding: 4px;
+.hero-image::before {
+  content: '';
+  position: absolute;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center,
+              rgba(0, 217, 255, 0.25),
+              rgba(138, 43, 226, 0.15),
+              transparent 70%);
+  filter: blur(40px);
+  z-index: 0;
+  animation: pulseGlow 6s ease-in-out infinite alternate;
 }
 
 .profile-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 8px solid #0a0e27;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: transparent;
+  box-shadow: 
+    0 0 25px rgba(0, 217, 255, 0.4),
+    0 0 45px rgba(138, 43, 226, 0.3),
+    0 0 70px rgba(0, 217, 255, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.5s ease;
+  position: relative;
+  z-index: 1;
 }
+
+.profile-img:hover {
+  transform: scale(1.05);
+  box-shadow: 
+    0 0 35px rgba(0, 217, 255, 0.7),
+    0 0 65px rgba(138, 43, 226, 0.6),
+    0 0 100px rgba(0, 217, 255, 0.5);
+}
+
+@keyframes pulseGlow {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-img {
+    width: 250px;
+    height: 250px;
+  }
+  .hero-image::before {
+    width: 280px;
+    height: 280px;
+  }
+}
+
 
 /* Quick Info Section */
 .quick-info {
@@ -319,11 +364,13 @@ header {
     max-width: 210px;
 }
 
+/* Kode CSS yang Dimodifikasi */
 .float-image {
     width: 100%;
-    border-radius: 12px;
-    border: 3px solid #008296;
-    box-shadow: 0 8px 24px rgba(0, 39, 46, 0.3);
+    height: 100%;         /* TAMBAHKAN INI: Pastikan gambar mengisi card */
+    object-fit: cover;   /* TAMBAHKAN INI: Jaga rasio aspek gambar */
+    border-radius: 12px; /* Biarkan ini agar gambar tetap bulat */
+    /* Hapus border dan box-shadow dari sini */
 }
 
 figcaption {
@@ -610,6 +657,69 @@ footer {
 
 .social-links a:hover {
     color: #00d9ff;
+}
+
+
+.flip-card {
+    background-color: transparent;
+    width: 100%;
+    
+
+    aspect-ratio: 1 / 1; 
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s, box-shadow 0.5s, border-color 0.5s;
+    transform-style: preserve-3d;
+    
+    border-radius: 12px;
+    border: 3px solid #008296;
+    box-shadow: 0 8px 24px rgba(0, 39, 46, 0.3);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+    background-color: #1a1d2e;
+}
+
+.profile-figure:hover .flip-card-inner {
+    transform: rotateY(180deg);
+    
+    border-color: #00d9ff;
+    box-shadow: 0 0 25px rgba(0, 217, 255, 0.7),
+                0 0 45px rgba(138, 43, 226, 0.6);
+}
+
+.hero-text h1,
+.hero-text h2,
+.hero-description,
+.hero-buttons,
+.bio h2,
+.bio p {
+  opacity: 0;
+}
+
+.hero-description,
+.hero-buttons,
+.bio p {
+  transform: translateY(10px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 /* Responsive Design */
