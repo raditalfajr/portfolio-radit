@@ -15,7 +15,7 @@
         <nav>
             <div class="nav-container">
                 <div class="logo">
-                    <span class="logo-highlight">Radit</span>Alfajri
+                    <span class="logo-highlight">Radit </span>Alfajri
                 </div>
                 <ul class="nav-menu">
                     <li><a href="index.html" class="active">Home</a></li>
@@ -28,28 +28,29 @@
 
     <!-- Hero Section -->
     <main>
-        <section class="hero">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>Halo, Saya <span class="highlight">Radit Alfajri</span></h1>
-                    <h2>Mahasiswa <mark>Pendidikan Teknik Informatika</mark></h2>
-                    <p class="hero-description">
-                        Seorang mahasiswa yang <strong>passionate</strong> dalam dunia teknologi informasi, 
-                        khususnya di bidang <em>Web Programming</em>, <em>Database</em>, dan <em>Network</em>. 
-                        Saya percaya bahwa teknologi dapat mengubah dunia menjadi lebih baik.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="pages/about.html" class="btn btn-primary">Tentang Saya</a>
-                        <a href="pages/portfolio.html" class="btn btn-secondary">Lihat Portfolio</a>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <div class="image-frame">
-                        <img src="images/profile.png" alt="Foto Radit Alfajri" class="profile-img">
-                    </div>
-                </div>
-            </div>
-        </section>
+    <section class="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+        <h1>Halo, Saya <span class="highlight">Radit Alfajri</span></h1>
+        <h2>Mahasiswa <mark>Pendidikan Teknik Informatika</mark></h2>
+        <p class="hero-description">
+            Seorang mahasiswa yang <strong>passionate</strong> dalam dunia teknologi informasi, 
+            khususnya di bidang <em>Web Programming</em>, <em>Database</em>, dan <em>Network</em>. 
+            Saya percaya bahwa teknologi dapat mengubah dunia menjadi lebih baik.
+        </p>
+        <div class="hero-buttons">
+            <a href="pages/about.html" class="btn btn-primary">Tentang Saya</a>
+            <a href="pages/portfolio.html" class="btn btn-secondary">Lihat Portfolio</a>
+        </div>
+        </div>
+
+        <!-- Gambar besar di samping teks -->
+        <div class="hero-image">
+        <img src="images/profile.png" alt="Radit Alfajri" class="profile-img">
+        </div>
+    </div>
+    </section>
+
 
         <!-- Quick Info Section -->
         <section class="quick-info">
@@ -100,5 +101,100 @@
             </div>
         </div>
     </footer>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            /*
+             * FUNGSI 1: EFEK MENGETIK (TYPEWRITER)
+             * Hanya untuk teks sederhana tanpa HTML di dalamnya.
+             */
+            function typeWriter(element, speed) {
+                return new Promise((resolve) => {
+                    const originalHTML = element.innerHTML;
+                    const textContent = element.textContent;
+                    
+                    element.innerHTML = "";
+                    element.style.opacity = 1;
+                    
+                    element.style.borderRight = ".15em solid #00d9ff";
+                    element.style.display = "inline-block";
+                    element.style.whiteSpace = "nowrap";
+                    element.style.overflow = "hidden";
+
+                    let i = 0;
+                    
+                    function type() {
+                        if (i < textContent.length) {
+                            element.innerHTML = textContent.substring(0, i + 1);
+                            i++;
+                            setTimeout(type, speed);
+                        } else {
+                            element.innerHTML = originalHTML;
+                            element.style.borderRight = "none";
+                            element.style.whiteSpace = "normal";
+                            element.style.overflow = "visible";
+                            resolve();
+                        }
+                    }
+                    type();
+                });
+            }
+
+            function fadeIn(element, delay) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        element.style.opacity = 1;
+                        element.style.transform = "translateY(0)";
+                        resolve();
+                    }, delay);
+                });
+            }
+
+            async function animateHomePage() {
+                const h1 = document.querySelector(".hero-text h1");
+                const h2 = document.querySelector(".hero-text h2");
+                const p = document.querySelector(".hero-description");
+                const buttons = document.querySelector(".hero-buttons");
+
+                if (!h1 || !h2 || !p || !buttons) return;
+
+                await new Promise(res => setTimeout(res, 500)); 
+                
+                await typeWriter(h1, 60);
+
+                await new Promise(res => setTimeout(res, 200)); 
+                
+                fadeIn(h2, 0);  
+                fadeIn(p, 200);    
+                await fadeIn(buttons, 400);
+            }
+            
+            async function animateAboutPage() {
+                const h2 = document.querySelector(".bio h2");
+                const p1 = document.querySelector(".bio p:nth-of-type(1)");
+                const p2 = document.querySelector(".bio p:nth-of-type(2)");
+
+                if (!h2 || !p1 || !p2) return;
+                
+
+                await new Promise(res => setTimeout(res, 500));
+                
+                await typeWriter(h2, 60);
+        
+                await new Promise(res => setTimeout(res, 200));
+
+                fadeIn(p1, 0);
+                await fadeIn(p2, 200);
+            }
+
+            if (document.querySelector(".hero-text")) {
+                animateHomePage();
+            } else if (document.querySelector(".bio")) {
+                animateAboutPage();
+            }
+
+        });
+    </script>
 </body>
 </html>
