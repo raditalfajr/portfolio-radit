@@ -40,7 +40,20 @@
             <div class="container">
                 <article class="profile-section">
                     <figure class="profile-figure">
-                        <img src="../images/WhatsApp Image 2025-09-21 at 00.03.02_ba07833a.jpg" alt="Foto Profil Radit Alfajri" class="float-image">
+                        
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                
+                                <div class="flip-card-front">
+                                    <img src="../images/WhatsApp Image 2025-09-21 at 00.03.02_ba07833a.jpg" alt="Foto Profil Radit Alfajri" class="float-image">
+                                </div>
+                                
+                                <div class="flip-card-back">
+                                    <img src="../images/WhatsApp Image 2025-07-15 at 09.54.19_820c74e8.jpg" alt="Foto Profil Alternatif" class="float-image"> 
+                                </div>
+
+                            </div>
+                        </div>
                         <figcaption>Radit Alfajri - Mahasiswa Teknik Informatika</figcaption>
                     </figure>
                     
@@ -165,5 +178,124 @@
             </div>
         </div>
     </footer>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            /*
+             * FUNGSI 1: EFEK MENGETIK (TYPEWRITER)
+             * Hanya untuk teks sederhana tanpa HTML di dalamnya.
+             */
+            function typeWriter(element, speed) {
+                return new Promise((resolve) => {
+                    const originalHTML = element.innerHTML;
+                    const textContent = element.textContent;
+                    
+                    element.innerHTML = "";
+                    element.style.opacity = 1;
+                    
+                    element.style.borderRight = ".15em solid #00d9ff";
+                    element.style.display = "inline-block";
+                    element.style.whiteSpace = "nowrap";
+                    element.style.overflow = "hidden";
+
+                    let i = 0;
+                    
+                    function type() {
+                        if (i < textContent.length) {
+                            element.innerHTML = textContent.substring(0, i + 1);
+                            i++;
+                            setTimeout(type, speed);
+                        } else {
+                            // Selesai: Kembalikan HTML asli (jika ada) & hapus kursor
+                            element.innerHTML = originalHTML;
+                            element.style.borderRight = "none";
+                            element.style.whiteSpace = "normal";
+                            element.style.overflow = "visible";
+                            resolve();
+                        }
+                    }
+                    type();
+                });
+            }
+
+            /*
+             * FUNGSI 2: EFEK FADE-IN (MUNCUL PERLAHAN)
+             * Untuk elemen dengan HTML kompleks (seperti <mark>, <strong>)
+             */
+            function fadeIn(element, delay) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        element.style.opacity = 1;
+                        element.style.transform = "translateY(0)";
+                        resolve();
+                    }, delay);
+                });
+            }
+
+            // ===============================================
+            // --- URUTAN ANIMASI (SEQUENCE) ---
+            // ===============================================
+
+            /**
+             * Animasi untuk Halaman HOME (index.html)
+             */
+            async function animateHomePage() {
+                const h1 = document.querySelector(".hero-text h1");
+                const h2 = document.querySelector(".hero-text h2");
+                const p = document.querySelector(".hero-description");
+                const buttons = document.querySelector(".hero-buttons");
+
+                if (!h1 || !h2 || !p || !buttons) return;
+
+                // Tunggu 500ms
+                await new Promise(res => setTimeout(res, 500)); 
+                
+                // 1. Ketik H1 (teks sederhana)
+                await typeWriter(h1, 60);
+                
+                // 2. Jeda 200ms
+                await new Promise(res => setTimeout(res, 200)); 
+                
+                // 3. Munculkan H2, Paragraf, dan Tombol (karena punya HTML kompleks)
+                fadeIn(h2, 0);      // -> Ini punya <mark>
+                fadeIn(p, 200);     // -> Ini punya <strong> dan <em>
+                await fadeIn(buttons, 400);
+            }
+            
+            /**
+             * Animasi untuk Halaman ABOUT ME (about.html)
+             */
+            async function animateAboutPage() {
+                const h2 = document.querySelector(".bio h2");
+                const p1 = document.querySelector(".bio p:nth-of-type(1)");
+                const p2 = document.querySelector(".bio p:nth-of-type(2)");
+
+                if (!h2 || !p1 || !p2) return;
+                
+                // Tunggu 500ms
+                await new Promise(res => setTimeout(res, 500));
+                
+                // 1. Ketik H2 (teks sederhana)
+                await typeWriter(h2, 60);
+                
+                // 2. Jeda 200ms
+                await new Promise(res => setTimeout(res, 200));
+
+                // 3. Munculkan paragraf (karena punya HTML kompleks)
+                fadeIn(p1, 0);      // -> Ini punya <mark> dan <strong>
+                await fadeIn(p2, 200); // -> Ini punya <strong> dan <em>
+            }
+
+            // --- MULAI ANIMASI ---
+            // Cek kita di halaman mana, lalu jalankan animasi yang sesuai
+            if (document.querySelector(".hero-text")) {
+                animateHomePage();
+            } else if (document.querySelector(".bio")) {
+                animateAboutPage();
+            }
+
+        });
+    </script>
 </body>
 </html>
